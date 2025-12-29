@@ -1,8 +1,24 @@
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 const taskList = document.getElementById("taskList");
 
+// 🔢 Task Counter
+function updateCounter() {
+  const total = tasks.length;
+  const completed = tasks.filter(task => task.completed).length;
+  const pending = total - completed;
+
+  document.getElementById("counter").innerText =
+    `Total: ${total} | Completed: ${completed} | Pending: ${pending}`;
+}
+
+// 🌙 Dark Mode
+function toggleDarkMode() {
+  document.body.classList.toggle("dark");
+}
+
 function displayTasks() {
   taskList.innerHTML = "";
+
   tasks.forEach((task, index) => {
     const li = document.createElement("li");
     li.textContent = task.text;
@@ -26,6 +42,7 @@ function displayTasks() {
   });
 
   localStorage.setItem("tasks", JSON.stringify(tasks));
+  updateCounter(); // ✅ update counter every time
 }
 
 function addTask() {
@@ -47,4 +64,3 @@ function deleteTask(index) {
   displayTasks();
 }
 
-displayTasks();

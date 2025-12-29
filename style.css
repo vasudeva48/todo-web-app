@@ -1,15 +1,16 @@
 body {
   background: #f2f2f2;
   font-family: Arial, sans-serif;
+  transition: 0.3s;
 }
 
 .container {
-  width: 300px;
+  width: 320px;
   background: white;
   margin: 80px auto;
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.15);
 }
 
 h1 {
@@ -18,17 +19,33 @@ h1 {
 
 .input-box {
   display: flex;
-  gap: 5px;
+  gap: 6px;
 }
 
 input {
   flex: 1;
   padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 button {
   padding: 8px 12px;
   cursor: pointer;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+#counter {
+  text-align: center;
+  margin: 10px 0;
+  font-size: 14px;
 }
 
 ul {
@@ -40,10 +57,11 @@ ul {
 li {
   background: #eee;
   padding: 8px;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-radius: 5px;
 }
 
 li.completed {
@@ -52,9 +70,25 @@ li.completed {
 }
 
 .delete-btn {
-  background: red;
+  background: #e74c3c;
   color: white;
   border: none;
   padding: 4px 8px;
   cursor: pointer;
+  border-radius: 4px;
 }
+
+/* 🌙 Dark Mode */
+.dark {
+  background: #121212;
+  color: white;
+}
+
+.dark .container {
+  background: #1e1e1e;
+}
+
+.dark li {
+  background: #333;
+}
+
