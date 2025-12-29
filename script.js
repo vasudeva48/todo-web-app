@@ -1,25 +1,24 @@
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+const API_URL = "http://localhost:5000/tasks";
+
+let tasks = [];
 const taskList = document.getElementById("taskList");
 
-// 🔢 Task Counter
-function updateCounter() {
-  const total = tasks.length;
-  const completed = tasks.filter(task => task.completed).length;
-  const pending = total - completed;
-
-  document.getElementById("counter").innerText =
-    `Total: ${total} | Completed: ${completed} | Pending: ${pending}`;
+/* ---------------- FETCH TASKS ---------------- */
+async function fetchTasks() {
+  try {
+    const res = await fetch(API_URL);
+    tasks = await res.json();
+    displayTasks();
+  } catch (err) {
+    console.error("Error fetching tasks:", err);
+  }
 }
 
-// 🌙 Dark Mode
-function toggleDarkMode() {
-  document.body.classList.toggle("dark");
-}
-
+/* ---------------- DISPLAY TASKS ---------------- */
 function displayTasks() {
   taskList.innerHTML = "";
 
-  tasks.forEach((task, index) => {
+  tasks.forEach((task) => {
     const li = document.createElement("li");
     li.textContent = task.text;
 
@@ -27,40 +26,56 @@ function displayTasks() {
       li.classList.add("completed");
     }
 
-    li.onclick = () => toggleTask(index);
-
     const delBtn = document.createElement("button");
     delBtn.textContent = "X";
     delBtn.className = "delete-btn";
-    delBtn.onclick = (e) => {
-      e.stopPropagation();
-      deleteTask(index);
-    };
+    delBtn.onclick = () => deleteTask(task._id);
 
     li.appendChild(delBtn);
     taskList.appendChild(li);
   });
 
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-  updateCounter(); // ✅ update counter every time
+  updateCounter();
 }
 
-function addTask() {
+/* ---------------- ADD TASK ---------------- */
+async function addTask() {
   const input = document.getElementById("taskInput");
   if (input.value.trim() === "") return;
 
-  tasks.push({ text: input.value, completed: false });
+  await fetch(API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text: input.value }),
+  });
+
   input.value = "";
-  displayTasks();
+  fetchTasks();
 }
 
-function toggleTask(index) {
-  tasks[index].completed = !tasks[index].completed;
-  displayTasks();
+/* ---------------- DELETE TASK ---------------- */
+async function deleteTask(id) {
+  await fetch(`${API_URL}/${id}`, {
+    method: "DELETE",
+  });
+  fetchTasks();
 }
 
-function deleteTask(index) {
-  tasks.splice(index, 1);
-  displayTasks();
+/* ---------------- COUNTER ---------------- */
+function updateCounter() {
+  const total = tasks.length;
+  const completed = tasks.filter(t => t.completed).length;
+  const pending = total - completed;
+
+  document.getElementById("counter").innerText =
+    `Total: ${total} | Completed: ${completed} | Pending: ${pending}`;
 }
+
+/* ---------------- DARK MODE ---------------- */
+function toggleDarkMode() {
+  document.body.classList.toggle("dark");
+}
+
+/* ---------------- LOAD DATA ON START ---------------- */
+fetchTasks();
 
