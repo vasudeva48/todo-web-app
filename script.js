@@ -1,4 +1,5 @@
-const API_URL = "http://localhost:5000/tasks";
+const API_URL = "https://todo-web-app-rane.onrender.com/tasks";
+
 
 let tasks = [];
 const taskList = document.getElementById("taskList");
