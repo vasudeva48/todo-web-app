@@ -9,7 +9,7 @@ app.use(express.json());
 /* ------------------ MongoDB Connection ------------------ */
 mongoose
   .connect(
-    "PASTE_YOUR_MONGODB_CONNECTION_STRING_HERE"
+    "mongodb+srv://gurramvasudeva_db_user:vasu4848@cluster0.r0jsel0.mongodb.net/todoapp?retryWrites=true&w=majority"
   )
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log("MongoDB error:", err));
@@ -29,13 +29,13 @@ app.get("/", (req, res) => {
   res.send("Backend is running");
 });
 
-// ✅ GET all tasks
+// READ – Get all tasks
 app.get("/tasks", async (req, res) => {
   const tasks = await Task.find();
   res.json(tasks);
 });
 
-// ✅ ADD a task
+// CREATE – Add a task
 app.post("/tasks", async (req, res) => {
   const newTask = new Task({
     text: req.body.text,
@@ -44,6 +44,22 @@ app.post("/tasks", async (req, res) => {
 
   await newTask.save();
   res.json(newTask);
+});
+
+// UPDATE – Mark task as completed ✅ (PUT route)
+app.put("/tasks/:id", async (req, res) => {
+  const task = await Task.findByIdAndUpdate(
+    req.params.id,
+    { completed: true },
+    { new: true }
+  );
+  res.json(task);
+});
+
+// DELETE – Remove a task
+app.delete("/tasks/:id", async (req, res) => {
+  await Task.findByIdAndDelete(req.params.id);
+  res.json({ message: "Task deleted" });
 });
 
 /* ------------------ Server ------------------ */
