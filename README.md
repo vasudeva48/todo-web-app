@@ -98,9 +98,3 @@ todo-web-app/
 - Improved UI animations
 
 ---
-
-## 📌 Note
-This project demonstrates **end-to-end full-stack development**, including frontend design, backend API development, database integration, and cloud deployment.
-
-## 📂 Project Structure
-
