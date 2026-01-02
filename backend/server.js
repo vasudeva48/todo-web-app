@@ -1,3 +1,10 @@
+const auth = require("./middleware/auth");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const User = require("./models/User");
+
+
+
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -30,10 +37,11 @@ app.get("/", (req, res) => {
 });
 
 // READ – Get all tasks
-app.get("/tasks", async (req, res) => {
-  const tasks = await Task.find();
+app.get("/tasks", auth, async (req, res) => {
+  const tasks = await Task.find({ userId: req.user.id });
   res.json(tasks);
 });
+
 
 // CREATE – Add a task
 app.post("/tasks", async (req, res) => {
@@ -64,6 +72,43 @@ app.delete("/tasks/:id", async (req, res) => {
 
 /* ------------------ Server ------------------ */
 const PORT = process.env.PORT || 5000;
+
+app.post("/auth/signup", async (req, res) => {
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+    const user = new User({
+      name: req.body.name,
+      email: req.body.email,
+      password: hashedPassword
+    });
+
+    await user.save();
+    res.json({ message: "Signup successful" });
+  } catch (err) {
+    res.status(400).json({ message: "User already exists" });
+  }
+});
+
+app.post("/auth/login", async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    const isMatch = await bcrypt.compare(req.body.password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid password" });
+    }
+
+    const token = jwt.sign({ userId: user._id }, "secretkey");
+    res.json({ token });
+  } catch (err) {
+    res.status(500).json({ message: "Login failed" });
+  }
+});
+
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
