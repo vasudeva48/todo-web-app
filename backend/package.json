@@ -1,18 +1,18 @@
 {
   "name": "todo-backend",
   "version": "1.0.0",
-  "description": "Backend for Todo Web App with Auth",
+  "description": "Backend for To-Do App",
   "main": "server.js",
-  "type": "commonjs",
   "scripts": {
     "start": "node server.js"
   },
+  "type": "commonjs",
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.3",
-    "mongoose": "^8.10.0"
+    "mongoose": "^9.0.2"
   }
 }
 
