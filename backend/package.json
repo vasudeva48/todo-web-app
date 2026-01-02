@@ -1,18 +1,18 @@
 {
-  "name": "backend",
+  "name": "todo-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "description": "Backend for Todo Web App with Auth",
+  "main": "server.js",
   "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
-    "express": "^5.2.1",
-    "mongoose": "^9.0.2"
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^8.10.0"
   }
 }
+
