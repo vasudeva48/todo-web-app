@@ -3,6 +3,13 @@ const token = localStorage.getItem("token");
 if (!token) {
   window.location.href = "login.html";
 }
+
+const savedTheme = localStorage.getItem("theme");
+
+if (savedTheme === "dark") {
+  document.body.classList.add("dark");
+}
+
 const API_URL = "https://todo-web-app-rane.onrender.com/tasks";
 
 let tasks = [];
@@ -116,6 +123,12 @@ function updateCounter() {
 /* ---------------- DARK MODE ---------------- */
 function toggleDarkMode() {
   document.body.classList.toggle("dark");
+
+  if (document.body.classList.contains("dark")) {
+    localStorage.setItem("theme", "dark");
+  } else {
+    localStorage.setItem("theme", "light");
+  }
 }
 
 /* ---------------- LOGOUT ---------------- */
