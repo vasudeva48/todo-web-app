@@ -1,100 +1,85 @@
-# ✅ To-Do List Web App 📝
+# 📝 Todo Web App
 
-A **full-stack To-Do List web application** that allows users to manage daily tasks efficiently.  
-The application is fully **deployed online**, featuring a clean UI, RESTful backend APIs, and persistent data storage using **MongoDB Atlas**.
-
----
-
-## 🚀 Features
-- Add new tasks
-- Mark tasks as completed
-- Delete tasks
-- Task counter (Total / Completed / Pending)
-- Dark mode toggle 🌙
-- Data persists even after page refresh
-- RESTful backend API integration
-- Fully deployed frontend and backend
-
----
-
-## 🛠️ Technologies Used
-
-### Frontend
-- HTML
-- CSS
-- JavaScript (Vanilla)
-- Hosted on **Netlify**
-
-### Backend
-- Node.js
-- Express.js
-- MongoDB Atlas
-- Mongoose
-- REST APIs
-- Hosted on **Render**
+A full-stack Todo application with authentication, task management, and persistent user settings.
 
 ---
 
 ## 🌐 Live Demo
 
-### 🔗 Frontend
-https://capable-lily-45dfa5.netlify.app
-
-### 🔗 Backend API
-https://todo-web-app-rane.onrender.com/tasks
+🔗 Frontend: https://capable-lily-45dfa5.netlify.app  
+🔗 Backend API: https://todo-web-app-rane.onrender.com  
 
 ---
 
-## 📂 Project Structure
-todo-web-app/
-│
-├── index.html
-├── style.css
-├── script.js
-├── README.md
-│
-└── backend/
-├── models/
-│ └── Task.js
-├── server.js
-├── package.json
-└── node_modules/
+## 🚀 Features
 
-
+- 🔐 User Signup & Login (JWT Authentication)
+- ➕ Add tasks
+- ✔️ Mark tasks as completed
+- ❌ Delete tasks
+- 👤 User-specific tasks (data isolation)
+- 🌙 Dark mode with persistence (remembers after refresh)
+- 🔄 Real-time UI updates
 
 ---
 
-## ⚙️ How It Works
-- The frontend communicates with the backend using the **Fetch API**
-- Backend exposes REST APIs for CRUD operations
-- Tasks are stored in **MongoDB Atlas** for persistence
-- Backend is deployed on **Render**
-- Frontend is deployed on **Netlify**
+## 🛠️ Tech Stack
+
+### Frontend
+- HTML
+- CSS
+- JavaScript
+
+### Backend
+- Node.js
+- Express.js
+
+### Database
+- MongoDB (Atlas)
+
+### Deployment
+- Netlify (Frontend)
+- Render (Backend)
 
 ---
 
-## 🧪 API Endpoints
-
-| Method | Endpoint | Description |
-|------|---------|-------------|
-| GET | `/tasks` | Fetch all tasks |
-| POST | `/tasks` | Add a new task |
-| PUT | `/tasks/:id` | Mark task as completed |
-| DELETE | `/tasks/:id` | Delete a task |
-
+---
 ---
 
-## 🧑‍💻 Author
-**Vasudeva**  
-2nd Year AIML Student
+## 🔧 Setup (Run Locally)
 
----
+### 1. Clone repository
+```bash
+git clone https://github.com/vasudeva48/todo-web-app.git
+cd todo-web-app
 
-## ⭐ Future Improvements
-- User authentication (Login / Signup)
-- Edit task functionality
-- Task categories & due dates
-- User-specific task lists
-- Improved UI animations
 
----
+2. Install backend dependencies
+
+cd backend
+npm install
+
+3. Start backend server
+
+   node server.js
+   
+4. Open frontend
+
+   Open index.html in browser
+
+--
+🔐 Environment Variables (Recommended)
+
+Create a .env file in backend:
+
+JWT_SECRET=your_secret_key
+MONGO_URI=your_mongodb_connection
+
+📌 Future Improvements
+✏️ Edit tasks
+📅 Due dates & priority
+🎨 Improved UI/UX
+🔐 Enhanced security with environment variables
+
+👨‍💻 Author
+GitHub: https://github.com/vasudeva48
