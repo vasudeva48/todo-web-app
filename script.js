@@ -1,40 +1,51 @@
-const API_URL = "https://todo-web-app-rane.onrender.com/tasks";
+const token = localStorage.getItem("token");
 
+if (!token) {
+  window.location.href = "login.html";
+}
+const API_URL = "http://localhost:5000/tasks";
 
 let tasks = [];
 const taskList = document.getElementById("taskList");
 
-/* ---------------- A) LOAD TASKS FROM BACKEND ---------------- */
+/* ---------------- LOAD TASKS ---------------- */
 async function loadTasks() {
-  try {
-    const res = await fetch(API_URL);
-    tasks = await res.json();
-    renderTasks();
-  } catch (err) {
-    console.error("Error loading tasks:", err);
+  const res = await fetch(API_URL, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    window.location.href = "login.html";
+    return;
   }
+
+  tasks = await res.json();
+  renderTasks();
 }
 
 /* ---------------- DISPLAY TASKS ---------------- */
 function renderTasks() {
   taskList.innerHTML = "";
 
-  tasks.forEach((task) => {
+  const sortedTasks = [...tasks].sort(
+    (a, b) => a.completed - b.completed
+  );
+
+  sortedTasks.forEach((task) => {
     const li = document.createElement("li");
 
-    // Task text
     const span = document.createElement("span");
     span.textContent = task.text;
-    if (task.completed) {
-      span.classList.add("completed");
-    }
+    if (task.completed) span.classList.add("completed");
 
-    // Complete button
     const completeBtn = document.createElement("button");
     completeBtn.textContent = "✔";
     completeBtn.onclick = () => completeTask(task._id);
+    completeBtn.disabled = task.completed;
 
-    // Delete button
     const delBtn = document.createElement("button");
     delBtn.textContent = "❌";
     delBtn.className = "delete-btn";
@@ -50,34 +61,45 @@ function renderTasks() {
   updateCounter();
 }
 
-/* ---------------- B) ADD TASK ---------------- */
+/* ---------------- ADD TASK ---------------- */
 async function addTask() {
   const input = document.getElementById("taskInput");
-  if (input.value.trim() === "") return;
+  if (!input.value.trim()) return;
 
   await fetch(API_URL, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ text: input.value }),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify({ text: input.value })
   });
 
   input.value = "";
   loadTasks();
 }
 
-/* ---------------- C) COMPLETE TASK (PUT) ---------------- */
+/* ---------------- COMPLETE TASK ---------------- */
 async function completeTask(id) {
   await fetch(`${API_URL}/${id}`, {
     method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
   });
+
   loadTasks();
 }
 
-/* ---------------- D) DELETE TASK ---------------- */
+/* ---------------- DELETE TASK ---------------- */
 async function deleteTask(id) {
   await fetch(`${API_URL}/${id}`, {
     method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
   });
+
   loadTasks();
 }
 
@@ -96,5 +118,13 @@ function toggleDarkMode() {
   document.body.classList.toggle("dark");
 }
 
-/* ---------------- LOAD ON PAGE START ---------------- */
+/* ---------------- LOGOUT ---------------- */
+function logout() {
+  localStorage.removeItem("token");
+  window.location.href = "login.html";
+}
+
+/* ---------------- START ---------------- */
 loadTasks();
+
+

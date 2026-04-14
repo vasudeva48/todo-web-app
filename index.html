@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>To-Do List App</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
+  <!-- 🔐 Auth Navigation -->
+  <div style="text-align:right; margin:10px;">
+    <a href="login.html">Login</a> |
+    <a href="signup.html">Signup</a>
+  </div>
 
   <div class="container">
     <h1>📝 To-Do List</h1>
@@ -15,16 +23,19 @@
       <button onclick="addTask()">Add</button>
     </div>
 
-    <!-- ✅ Task Counter (Step 1A) -->
+    <!-- ✅ Task Counter -->
     <p id="counter">Total: 0 | Completed: 0 | Pending: 0</p>
 
-    <!-- 🌙 Dark Mode Button (Step 2A) -->
+    <!-- 🌙 Dark Mode -->
     <button onclick="toggleDarkMode()">🌙 Dark Mode</button>
+
+    <!-- 🚪 Logout -->
+    <button onclick="logout()">🚪 Logout</button>
 
     <ul id="taskList"></ul>
   </div>
 
   <script src="script.js"></script>
 </body>
-</html>
 
+</html>
