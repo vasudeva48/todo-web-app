@@ -2,8 +2,7 @@ const auth = require("./middleware/auth");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("./models/User");
-
-
+const Task = require("./models/Task.js");
 
 const express = require("express");
 const cors = require("cors");
@@ -13,7 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-/* ------------------ MongoDB Connection ------------------ */
+/* ------------------ MongoDB Connectionc ------------------ */
 mongoose
   .connect(
     "mongodb+srv://gurramvasudeva_db_user:vasu4848@cluster0.r0jsel0.mongodb.net/todoapp?retryWrites=true&w=majority"
@@ -21,57 +20,53 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log("MongoDB error:", err));
 
-/* ------------------ Task Schema ------------------ */
-const taskSchema = new mongoose.Schema({
-  text: String,
-  completed: Boolean,
-});
-
-const Task = mongoose.model("Task", taskSchema);
-
 /* ------------------ ROUTES ------------------ */
 
-// Test route
+// Test
 app.get("/", (req, res) => {
   res.send("Backend is running");
 });
 
-// READ – Get all tasks
+// GET tasks (ONLY current user)
 app.get("/tasks", auth, async (req, res) => {
-  const tasks = await Task.find({ userId: req.user.id });
+  const tasks = await Task.find({ userId: req.userId });
   res.json(tasks);
 });
 
-
-// CREATE – Add a task
-app.post("/tasks", async (req, res) => {
-  const newTask = new Task({
+// ADD task (attach userId)
+app.post("/tasks", auth, async (req, res) => {
+  const task = new Task({
     text: req.body.text,
     completed: false,
+    userId: req.userId
   });
 
-  await newTask.save();
-  res.json(newTask);
-});
-
-// UPDATE – Mark task as completed ✅ (PUT route)
-app.put("/tasks/:id", async (req, res) => {
-  const task = await Task.findByIdAndUpdate(
-    req.params.id,
-    { completed: true },
-    { new: true }
-  );
+  await task.save();
   res.json(task);
 });
 
-// DELETE – Remove a task
-app.delete("/tasks/:id", async (req, res) => {
-  await Task.findByIdAndDelete(req.params.id);
+// COMPLETE task
+app.put("/tasks/:id", auth, async (req, res) => {
+  const task = await Task.findOneAndUpdate(
+    { _id: req.params.id, userId: req.userId },
+    { completed: true },
+    { new: true }
+  );
+
+  res.json(task);
+});
+
+// DELETE task
+app.delete("/tasks/:id", auth, async (req, res) => {
+  await Task.findOneAndDelete({
+    _id: req.params.id,
+    userId: req.userId
+  });
+
   res.json({ message: "Task deleted" });
 });
 
-/* ------------------ Server ------------------ */
-const PORT = process.env.PORT || 5000;
+/* ------------------ AUTH ------------------ */
 
 app.post("/auth/signup", async (req, res) => {
   try {
@@ -102,14 +97,15 @@ app.post("/auth/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid password" });
     }
 
-    const token = jwt.sign({ userId: user._id }, "secretkey");
+    const token = jwt.sign({ userId: user._id }, "secretkey", { expiresIn: "1d" });
     res.json({ token });
   } catch (err) {
     res.status(500).json({ message: "Login failed" });
   }
 });
 
-
+/* ------------------ SERVER ------------------ */
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
