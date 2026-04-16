@@ -6,7 +6,7 @@ A full-stack Todo application with authentication, task management, and persiste
 
 ## 🌐 Live Demo
 
-🔗 Frontend: https://capable-lily-45dfa5.netlify.app/  
+🔗 Frontend: https://capable-lily-45dfa5.netlify.app/
 🔗 Backend API: https://todo-web-app-rane.onrender.com  
 
 ---
