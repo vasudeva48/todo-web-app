@@ -139,5 +139,3 @@ function logout() {
 
 /* ---------------- START ---------------- */
 loadTasks();
-
-
