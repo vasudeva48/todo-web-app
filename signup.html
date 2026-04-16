@@ -1,19 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+  <meta charset="UTF-8">
   <title>Signup</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <h2>Signup</h2>
+  <div class="container">
+    <h2>Signup</h2>
 
-  <input id="name" placeholder="Name"><br><br>
-  <input id="email" placeholder="Email"><br><br>
-  <input id="password" type="password" placeholder="Password"><br><br>
+    <input id="name" placeholder="Name"><br><br>
+    <input id="email" type="email" placeholder="Email"><br><br>
+    <input id="password" type="password" placeholder="Password"><br><br>
 
-  <button onclick="signup()">Signup</button>
+    <button onclick="signup()">Signup</button>
+
+    <p style="margin-top: 15px;">
+      Already have an account? <a href="login.html">Login</a>
+    </p>
+  </div>
 
   <script>
     async function signup() {
@@ -22,23 +30,35 @@
       const password = document.getElementById("password").value;
 
       if (!name || !email || !password) {
-        alert("Please fill in all fields");
+        alert("Please fill all fields");
         return;
       }
 
-      const res = await fetch("http://localhost:5000/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password })
-      });
+      try {
+        const res = await fetch("https://todo-web-app-rane.onrender.com/auth/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            password: password
+          })
+        });
 
-      const data = await res.json();
+        const data = await res.json();
 
-      if (res.ok) {
-        alert("Signup successful! Please login.");
-        window.location.href = "login.html";
-      } else {
-        alert(data.message || "Signup failed");
+        if (res.ok) {
+          alert("Signup successful! Please login.");
+          window.location.href = "login.html";
+        } else {
+          alert(data.message || "Signup failed");
+        }
+
+      } catch (error) {
+        alert("Server error");
+        console.error(error);
       }
     }
   </script>
