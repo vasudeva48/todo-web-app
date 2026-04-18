@@ -47,13 +47,17 @@ app.post("/tasks", auth, async (req, res) => {
 
 // COMPLETE task
 app.put("/tasks/:id", auth, async (req, res) => {
-  const task = await Task.findOneAndUpdate(
-    { _id: req.params.id, userId: req.userId },
-    { completed: true },
-    { new: true }
-  );
+  try {
+    const updatedTask = await Task.findOneAndUpdate(
+      { _id: req.params.id, userId: req.userId },
+      { text: req.body.text, completed: req.body.completed },
+      { new: true }
+    );
 
-  res.json(task);
+    res.json(updatedTask);
+  } catch (err) {
+    res.status(500).json({ message: "Update failed" });
+  }
 });
 
 // DELETE task
