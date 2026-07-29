@@ -14,11 +14,14 @@ import {
   MapPin, 
   Phone,
   MessageSquare,
-  Play
+  Play,
+  Menu,
+  X
 } from 'lucide-react';
 
 const Landing = ({ onNavigate }) => {
   const [faqOpen, setFaqOpen] = useState({});
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const toggleFaq = (index) => {
     setFaqOpen(prev => ({ ...prev, [index]: !prev[index] }));
@@ -109,7 +112,7 @@ const Landing = ({ onNavigate }) => {
       
       {/* 1. Header Navigation Bar */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/70 dark:bg-[#09090b]/70 backdrop-blur-md border-b border-slate-200/40 dark:border-zinc-800/40">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-sky-600 to-blue-500 text-white flex items-center justify-center font-bold shadow-md shadow-blue-500/20">
               <Sparkles className="w-4 h-4" />
@@ -117,6 +120,7 @@ const Landing = ({ onNavigate }) => {
             <span className="font-bold text-lg text-slate-800 dark:text-white tracking-tight">AssignTrack</span>
           </div>
 
+          {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600 dark:text-zinc-300">
             <a href="#home" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Home</a>
             <a href="#features" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Features</a>
@@ -125,21 +129,96 @@ const Landing = ({ onNavigate }) => {
             <a href="#contact" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Contact</a>
           </div>
 
-          <div className="flex items-center gap-3">
+          {/* Desktop CTA Action Buttons */}
+          <div className="hidden md:flex items-center gap-3">
             <button 
               onClick={() => onNavigate('login')}
-              className="px-4 py-2 text-sm font-medium text-slate-700 dark:text-zinc-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              className="px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-zinc-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              style={{ minHeight: '44px' }}
             >
               Log In
             </button>
             <button 
               onClick={() => onNavigate('signup')}
-              className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-sm hover:shadow-md transition-all active:scale-98"
+              className="px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-sm hover:shadow-md transition-all active:scale-98 flex items-center justify-center"
+              style={{ minHeight: '44px' }}
             >
               Sign Up
             </button>
           </div>
+
+          {/* Mobile hamburger menu toggle */}
+          <div className="flex md:hidden items-center">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="w-11 h-11 flex items-center justify-center rounded-xl border border-slate-200 dark:border-zinc-800 text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-900 transition-colors"
+              style={{ minWidth: '44px', minHeight: '44px' }}
+              aria-label="Toggle Menu"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Dropdown Menu Drawer */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-b border-slate-200/50 dark:border-zinc-800/50 bg-white/95 dark:bg-[#09090b]/95 backdrop-blur-lg animate-fade-in">
+            <div className="flex flex-col px-6 py-4 space-y-4 text-left font-medium text-sm text-slate-600 dark:text-zinc-300">
+              <a 
+                href="#home" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-2 border-b border-slate-100 dark:border-zinc-800/40 hover:text-blue-600 transition-colors"
+              >
+                Home
+              </a>
+              <a 
+                href="#features" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-2 border-b border-slate-100 dark:border-zinc-800/40 hover:text-blue-600 transition-colors"
+              >
+                Features
+              </a>
+              <a 
+                href="#testimonials" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-2 border-b border-slate-100 dark:border-zinc-800/40 hover:text-blue-600 transition-colors"
+              >
+                About
+              </a>
+              <a 
+                href="#faq" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-2 border-b border-slate-100 dark:border-zinc-800/40 hover:text-blue-600 transition-colors"
+              >
+                FAQ
+              </a>
+              <a 
+                href="#contact" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-2 border-b border-slate-100 dark:border-zinc-800/40 hover:text-blue-600 transition-colors"
+              >
+                Contact
+              </a>
+              
+              <div className="flex flex-col gap-2.5 pt-2">
+                <button 
+                  onClick={() => { setMobileMenuOpen(false); onNavigate('login'); }}
+                  className="w-full py-3 text-center text-sm font-semibold rounded-xl border border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-200 bg-white/40 dark:bg-zinc-900/40 hover:bg-slate-50 dark:hover:bg-zinc-800"
+                  style={{ minHeight: '44px' }}
+                >
+                  Log In
+                </button>
+                <button 
+                  onClick={() => { setMobileMenuOpen(false); onNavigate('signup'); }}
+                  className="w-full py-3 text-center text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-md"
+                  style={{ minHeight: '44px' }}
+                >
+                  Sign Up Free
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* 2. Hero Section */}
@@ -395,20 +474,21 @@ const Landing = ({ onNavigate }) => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <label className="text-[10px] font-bold text-slate-400 dark:text-zinc-500 uppercase">First Name</label>
-                  <input type="text" required placeholder="John" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-transparent text-xs outline-none focus:border-blue-500" />
+                  <input type="text" required placeholder="John" className="w-full px-4 py-3 md:py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-transparent text-xs outline-none focus:border-blue-500" style={{ minHeight: '44px' }} />
                 </div>
                 <div className="space-y-1">
                   <label className="text-[10px] font-bold text-slate-400 dark:text-zinc-500 uppercase">Email</label>
-                  <input type="email" required placeholder="john@example.com" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-transparent text-xs outline-none focus:border-blue-500" />
+                  <input type="email" required placeholder="john@example.com" className="w-full px-4 py-3 md:py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-transparent text-xs outline-none focus:border-blue-500" style={{ minHeight: '44px' }} />
                 </div>
               </div>
               <div className="space-y-1">
                 <label className="text-[10px] font-bold text-slate-400 dark:text-zinc-500 uppercase">Message</label>
-                <textarea rows="4" required placeholder="Describe your question..." className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-transparent text-xs outline-none focus:border-blue-500 resize-none"></textarea>
+                <textarea rows="4" required placeholder="Describe your question..." className="w-full px-4 py-3 md:py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-transparent text-xs outline-none focus:border-blue-500 resize-none" style={{ minHeight: '100px' }}></textarea>
               </div>
               <button 
                 type="submit"
                 className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-white font-semibold bg-blue-600 hover:bg-blue-700 shadow-sm transition-all"
+                style={{ minHeight: '44px' }}
               >
                 <MessageSquare className="w-4 h-4" />
                 <span>Send Message</span>

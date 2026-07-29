@@ -25,13 +25,15 @@ const Navbar = ({ activeTab, setActiveTab, onMenuToggle, onQuickAddClick, search
   };
 
   return (
-    <header className="sticky top-0 z-20 flex items-center justify-between px-6 h-16 border-b border-slate-200/40 dark:border-zinc-800/40 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-md">
+    <header className="sticky top-0 z-20 flex items-center justify-between px-4 md:px-6 h-16 border-b border-slate-200/40 dark:border-zinc-800/40 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-md">
       
       {/* Left: Collapsible trigger and Breadcrumbs */}
       <div className="flex items-center gap-3">
         <button
           onClick={onMenuToggle}
           className="flex md:hidden items-center justify-center p-2 rounded-xl border border-slate-200 dark:border-zinc-800 text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-900 transition-colors"
+          style={{ minWidth: '44px', minHeight: '44px' }}
+          aria-label="Toggle navigation menu"
         >
           <Menu className="w-5 h-5" />
         </button>
@@ -71,8 +73,10 @@ const Navbar = ({ activeTab, setActiveTab, onMenuToggle, onQuickAddClick, search
         {/* Theme Switcher Toggle */}
         <button
           onClick={toggleTheme}
-          className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-500 dark:text-zinc-400 transition-colors"
+          className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-500 dark:text-zinc-400 transition-colors flex items-center justify-center w-11 h-11"
+          style={{ minWidth: '44px', minHeight: '44px' }}
           title="Toggle display theme"
+          aria-label="Toggle theme"
         >
           {isDark ? <Sun className="w-4.5 h-4.5 text-amber-500" /> : <Moon className="w-4.5 h-4.5 text-indigo-500" />}
         </button>
@@ -81,11 +85,13 @@ const Navbar = ({ activeTab, setActiveTab, onMenuToggle, onQuickAddClick, search
         <div className="relative">
           <button
             onClick={() => setIsNotifOpen(!isNotifOpen)}
-            className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-500 dark:text-zinc-400 transition-colors relative"
+            className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-500 dark:text-zinc-400 transition-colors relative flex items-center justify-center w-11 h-11"
+            style={{ minWidth: '44px', minHeight: '44px' }}
             title="Notifications"
+            aria-label="Open notifications"
           >
             <Bell className="w-4.5 h-4.5" />
-            <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+            <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
           </button>
 
           {isNotifOpen && (
@@ -117,7 +123,9 @@ const Navbar = ({ activeTab, setActiveTab, onMenuToggle, onQuickAddClick, search
         <div className="relative">
           <button
             onClick={() => setIsProfileOpen(!isProfileOpen)}
-            className="flex items-center gap-1.5 p-1 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors"
+            className="flex items-center justify-center p-1 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors w-11 h-11"
+            style={{ minWidth: '44px', minHeight: '44px' }}
+            aria-label="User profile menu"
           >
             <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-zinc-800 text-blue-700 dark:text-zinc-300 font-bold text-xs flex items-center justify-center">
               {user?.name?.charAt(0).toUpperCase()}

@@ -62,8 +62,8 @@ const ForgotPassword = ({ onNavigate }) => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#09090b] flex items-center justify-center p-4 bg-mesh transition-colors duration-300">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#09090b] flex flex-col items-center justify-center py-16 px-4 bg-mesh transition-colors duration-300 overflow-y-auto">
+      <div className="w-full max-w-md my-auto">
         
         {/* Top Header Logo */}
         <div className="flex flex-col items-center mb-8 text-center">

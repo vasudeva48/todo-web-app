@@ -15,6 +15,7 @@ import {
 const CalendarView = ({ tasks }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedTask, setSelectedTask] = useState(null);
+  const [selectedDay, setSelectedDay] = useState(new Date().getDate());
 
   const getDaysInMonth = (date) => {
     const year = date.getFullYear();
@@ -33,10 +34,12 @@ const CalendarView = ({ tasks }) => {
 
   const prevMonth = () => {
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+    setSelectedDay(null);
   };
 
   const nextMonth = () => {
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+    setSelectedDay(null);
   };
 
   const monthNames = [
@@ -142,12 +145,16 @@ const CalendarView = ({ tasks }) => {
               new Date().getDate() === day && 
               new Date().getMonth() === currentDate.getMonth() && 
               new Date().getFullYear() === currentDate.getFullYear();
+            const isSelected = day && selectedDay === day;
 
             return (
               <div 
                 key={idx} 
-                className={`min-h-[110px] p-2 flex flex-col justify-between hover:bg-slate-50/40 dark:hover:bg-zinc-900/10 transition-colors relative ${
+                onClick={() => day && setSelectedDay(day)}
+                className={`min-h-[65px] md:min-h-[110px] p-1 md:p-2 flex flex-col justify-between hover:bg-slate-50/40 dark:hover:bg-zinc-900/10 transition-all relative cursor-pointer select-none ${
                   idx < 7 ? 'border-t-0' : ''
+                } ${
+                  isSelected ? 'bg-blue-500/10 dark:bg-blue-500/5 ring-1 ring-blue-500/30' : ''
                 }`}
               >
                 <div className="flex justify-between items-center mb-1">
@@ -165,18 +172,37 @@ const CalendarView = ({ tasks }) => {
                     <span />
                   )}
                   {dayTasks.length > 0 && (
-                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400">
+                    <span className="hidden md:inline-block text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400">
                       {dayTasks.length} task{dayTasks.length > 1 ? 's' : ''}
                     </span>
                   )}
                 </div>
 
-                {/* Day Tasks List (Visual Badges) */}
-                <div className="flex-1 space-y-1 overflow-hidden mt-1 max-h-[70px]">
+                {/* Mobile Priority Dots Row */}
+                <div className="flex md:hidden items-center justify-center gap-1 mt-1 flex-wrap">
+                  {dayTasks.slice(0, 4).map((task) => (
+                    <span 
+                      key={task._id}
+                      className={`w-1.5 h-1.5 rounded-full ${
+                        task.priority?.toLowerCase() === 'high' ? 'bg-rose-500' :
+                        task.priority?.toLowerCase() === 'medium' ? 'bg-amber-500' : 'bg-blue-500'
+                      } ${task.completed ? 'opacity-40' : ''}`}
+                    />
+                  ))}
+                  {dayTasks.length > 4 && (
+                    <span className="text-[8px] font-bold text-slate-400 dark:text-zinc-500">+</span>
+                  )}
+                </div>
+
+                {/* Desktop Tasks List (Visual Badges) */}
+                <div className="hidden md:block flex-1 space-y-1 overflow-hidden mt-1 max-h-[70px]">
                   {dayTasks.slice(0, 3).map((task) => (
                     <button
                       key={task._id}
-                      onClick={() => setSelectedTask(task)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedTask(task);
+                      }}
                       className={`w-full text-[10px] font-medium px-2 py-0.5 rounded-md truncate text-left block cursor-pointer transition-transform hover:scale-102 ${getPriorityColor(task.priority)} ${
                         task.completed ? 'opacity-55 line-through' : ''
                       }`}
@@ -195,6 +221,45 @@ const CalendarView = ({ tasks }) => {
           })}
         </div>
       </div>
+
+      {/* Selected Day Tasks Panel (visible on all screens, but especially useful on mobile/tablet) */}
+      {selectedDay && (
+        <GlassCard className="p-5 text-left mt-5 animate-slide-up" hover={false}>
+          <h3 className="text-xs font-bold uppercase text-slate-450 dark:text-zinc-400 tracking-wider mb-4 flex items-center gap-1.5">
+            <CalendarIcon className="w-4 h-4 text-blue-500" />
+            <span>Due on {monthNames[currentDate.getMonth()]} {selectedDay}, {currentDate.getFullYear()}</span>
+          </h3>
+          {getTasksForDay(selectedDay).length === 0 ? (
+            <p className="text-xs text-slate-400 py-6 text-center">No assignments due on this day.</p>
+          ) : (
+            <div className="divide-y divide-slate-100 dark:divide-zinc-800/40">
+              {getTasksForDay(selectedDay).map(task => (
+                <div key={task._id} className="py-3 flex items-center justify-between gap-4 first:pt-0 last:pb-0">
+                  <div className="min-w-0">
+                    <p className="text-xs font-bold text-slate-800 dark:text-white truncate">{task.title}</p>
+                    <div className="flex items-center gap-2 mt-1 text-[10px] text-slate-400">
+                      <span className="font-semibold text-slate-550 dark:text-zinc-400">{task.subject}</span>
+                      <span>•</span>
+                      <span className={`font-bold uppercase tracking-wider ${
+                        task.priority?.toLowerCase() === 'high' ? 'text-rose-500' :
+                        task.priority?.toLowerCase() === 'medium' ? 'text-amber-500' : 'text-blue-500'
+                      }`}>{task.priority}</span>
+                    </div>
+                  </div>
+                  <button 
+                    onClick={() => setSelectedTask(task)}
+                    className="px-3.5 py-2.5 bg-blue-50 dark:bg-blue-950/40 hover:bg-blue-100 text-blue-600 dark:text-blue-400 text-xs font-bold rounded-xl transition-colors flex-shrink-0"
+                    style={{ minHeight: '44px', minWidth: '60px' }}
+                    aria-label="View task details"
+                  >
+                    View
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </GlassCard>
+      )}
 
       {/* Task Details Slide-over Modal Overlay */}
       {selectedTask && (

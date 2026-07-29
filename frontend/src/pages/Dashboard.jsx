@@ -97,7 +97,8 @@ const Dashboard = ({ tasks, isLoading, setActiveTab, onCompleteTask, onAddTask }
           </div>
           <button
             onClick={() => setActiveTab('assignments')}
-            className="flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl text-blue-600 bg-blue-50 dark:bg-blue-950/40 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-950/80 transition-colors w-fit"
+            className="flex items-center justify-center gap-1.5 px-4 py-3 md:py-2.5 text-xs font-semibold rounded-xl text-blue-600 bg-blue-50 dark:bg-blue-950/40 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-950/80 transition-colors w-fit"
+            style={{ minHeight: '44px' }}
           >
             <span>Assignments Manager</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -106,7 +107,7 @@ const Dashboard = ({ tasks, isLoading, setActiveTab, onCompleteTask, onAddTask }
       </GlassCard>
 
       {/* 2. Key Performance Metrics Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         
         {/* Total Card */}
         <GlassCard className="p-4 text-left" hover={false}>
@@ -157,7 +158,7 @@ const Dashboard = ({ tasks, isLoading, setActiveTab, onCompleteTask, onAddTask }
         </GlassCard>
 
         {/* Completion % Card */}
-        <GlassCard className="p-4 text-left col-span-2 lg:col-span-1" hover={false}>
+        <GlassCard className="p-4 text-left col-span-1 md:col-span-2 lg:col-span-1" hover={false}>
           <div className="flex items-center justify-between">
             <span className="text-[9px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-widest">Efficiency</span>
             <TrendingUp className="w-4 h-4 text-emerald-500" />
@@ -171,10 +172,10 @@ const Dashboard = ({ tasks, isLoading, setActiveTab, onCompleteTask, onAddTask }
       </div>
 
       {/* 3. Sub-widgets split grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-5">
         
         {/* Left Column: Recent and Upcoming widgets */}
-        <div className="lg:col-span-8 space-y-5">
+        <div className="md:col-span-1 lg:col-span-8 space-y-5">
           
           {/* Upcoming Deadlines Widget */}
           <GlassCard className="p-5 text-left" hover={false}>
@@ -208,7 +209,8 @@ const Dashboard = ({ tasks, isLoading, setActiveTab, onCompleteTask, onAddTask }
                       </span>
                       <button 
                         onClick={() => onCompleteTask(task)}
-                        className="px-3 py-1 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold rounded-lg transition-colors"
+                        className="px-3 py-2 md:py-1 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold rounded-lg transition-colors flex items-center justify-center"
+                        style={{ minHeight: '44px', minWidth: '44px' }}
                       >
                         Submit
                       </button>
@@ -255,7 +257,7 @@ const Dashboard = ({ tasks, isLoading, setActiveTab, onCompleteTask, onAddTask }
         </div>
 
         {/* Right Column: Quick Add and Recent Activity widgets */}
-        <div className="lg:col-span-4 space-y-5 text-left">
+        <div className="md:col-span-1 lg:col-span-4 space-y-5 text-left">
           
           {/* Quick Add Assignment Form Widget */}
           <GlassCard className="p-5" hover={false}>
@@ -313,7 +315,8 @@ const Dashboard = ({ tasks, isLoading, setActiveTab, onCompleteTask, onAddTask }
 
               <button
                 type="submit"
-                className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl shadow-sm transition-all"
+                className="w-full py-3 md:py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl shadow-sm transition-all flex items-center justify-center"
+                style={{ minHeight: '44px' }}
               >
                 Register Assignment
               </button>

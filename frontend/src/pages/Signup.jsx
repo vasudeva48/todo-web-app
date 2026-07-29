@@ -41,18 +41,19 @@ const Signup = ({ onNavigate }) => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#09090b] flex items-center justify-center p-4 bg-mesh transition-colors duration-300 relative">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#09090b] flex flex-col items-center justify-center py-16 px-4 bg-mesh transition-colors duration-300 relative overflow-y-auto">
       
       {/* Floating Home Back Button */}
       <button 
         onClick={() => onNavigate('landing')}
-        className="absolute top-6 left-6 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-zinc-800 hover:bg-white dark:hover:bg-zinc-900 text-xs font-semibold text-slate-500 dark:text-zinc-400 shadow-sm transition-all"
+        className="fixed top-6 left-6 z-20 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-sm hover:bg-white dark:hover:bg-zinc-900 text-xs font-semibold text-slate-500 dark:text-zinc-400 shadow-sm transition-all"
+        style={{ minHeight: '44px' }}
       >
         <ArrowLeft className="w-3.5 h-3.5" />
         <span>Back to Home</span>
       </button>
 
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-md my-auto">
         
         {/* Header */}
         <div className="flex flex-col items-center mb-8 text-center">

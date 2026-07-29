@@ -232,7 +232,7 @@ function App() {
         />
 
         {/* Inner Page View */}
-        <main className="max-w-5xl mx-auto px-6 py-8">
+        <main className="max-w-5xl mx-auto px-4 py-6 md:px-6 md:py-8">
           {activeTab === 'dashboard' && (
             <Dashboard 
               tasks={tasks} 
